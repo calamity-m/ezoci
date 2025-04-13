@@ -36,62 +36,48 @@ func colorize(colorCode int, v string) string {
 
 type InterceptHandler struct {
 	slog.Handler
-	log    *log.Logger
-	pretty bool
+	log     *log.Logger
+	pretty  bool
+	verbose bool
 }
 
 func (c *InterceptHandler) Handle(ctx context.Context, r slog.Record) error {
 
-	if c.pretty {
-		var out = fmt.Sprintf("%s | %s", r.Level, r.Message)
+	format := ""
+	if c.verbose {
+		format = fmt.Sprintf("%s | %s | ", r.Time.String(), r.Level)
+	}
+	format = fmt.Sprintf("%s%s", format, r.Message)
 
+	if c.pretty {
 		switch r.Level {
 		case slog.LevelDebug:
-			out = colorize(darkGray, out)
+			format = colorize(darkGray, format)
 		case slog.LevelWarn:
-			out = colorize(lightYellow, out)
+			format = colorize(lightYellow, format)
 		case slog.LevelError:
-			out = colorize(lightRed, out)
+			format = colorize(lightRed, format)
 		}
 
-		c.log.Println(
-			colorize(lightGray, r.Time.String()),
-			out,
-		)
-	} else {
-		c.log.Println(r.Message)
 	}
 
+	c.log.Println(format)
 	return nil
 }
 
-func newInterceptHandler(w io.Writer, opts *slog.HandlerOptions, structured bool, pretty bool, debug bool) *InterceptHandler {
+func NewInterceptHandler(w io.Writer, opts *slog.HandlerOptions, pretty bool, verbose bool) *InterceptHandler {
 	if opts == nil {
 		opts = &slog.HandlerOptions{}
 	}
 
-	if debug {
+	if verbose {
 		opts.Level = slog.LevelDebug
-	}
-
-	var h slog.Handler
-	if structured {
-		h = slog.NewJSONHandler(w, opts)
-	} else {
-		h = slog.NewTextHandler(w, opts)
 	}
 
 	return &InterceptHandler{
 		log:     log.New(w, "", 0),
-		Handler: h,
+		Handler: slog.NewTextHandler(w, opts),
 		pretty:  pretty,
+		verbose: verbose,
 	}
-}
-
-func NewInterceptedTextHandler(w io.Writer, pretty bool, debug bool, opts *slog.HandlerOptions) *InterceptHandler {
-	return newInterceptHandler(w, opts, false, pretty, debug)
-}
-
-func NewInterceptedJSONHandler(w io.Writer, pretty bool, debug bool, opts *slog.HandlerOptions) *InterceptHandler {
-	return newInterceptHandler(w, opts, true, pretty, debug)
 }
