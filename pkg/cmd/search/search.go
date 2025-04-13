@@ -3,6 +3,7 @@ package search
 import (
 	"fmt"
 	"log/slog"
+	"os"
 
 	"github.com/calamity-m/ezoci"
 	"github.com/calamity-m/ezoci/pkg/search"
@@ -44,7 +45,7 @@ func newGhcrCommand() *cobra.Command {
 			)
 			if err != nil {
 				slog.Error(fmt.Sprintf("Failed to search GHCR registry - %s", err), slog.Any("error", err))
-				return
+				os.Exit(1)
 			}
 
 			slog.Info(out)
@@ -68,7 +69,7 @@ func newDockerCommand() *cobra.Command {
 			)
 			if err != nil {
 				slog.Error(fmt.Sprintf("Failed to search Docker registry - %s", err), slog.Any("error", err))
-				return
+				os.Exit(1)
 			}
 
 			slog.Info(out)
@@ -92,7 +93,7 @@ func newGcrCommand() *cobra.Command {
 			)
 			if err != nil {
 				slog.Error(fmt.Sprintf("Failed to search GCR registry - %s", err), slog.Any("error", err))
-				return
+				os.Exit(1)
 			}
 
 			slog.Info(out)
@@ -116,7 +117,7 @@ func newGitlabCommand() *cobra.Command {
 			)
 			if err != nil {
 				slog.Error(fmt.Sprintf("Failed to search Gitlab registry - %s", err), slog.Any("error", err))
-				return
+				os.Exit(1)
 			}
 
 			slog.Info(out)
@@ -140,7 +141,7 @@ func newHarborCommand() *cobra.Command {
 			)
 			if err != nil {
 				slog.Error(fmt.Sprintf("Failed to search Harbor registry - %s", err), slog.Any("error", err))
-				return
+				os.Exit(1)
 			}
 
 			slog.Info(out)
