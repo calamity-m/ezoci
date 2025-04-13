@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/calamity-m/ezoci"
-	"github.com/calamity-m/ezoci/pkg/search"
+	"github.com/calamity-m/ezoci/pkg/providers"
 	"github.com/spf13/cobra"
 )
 
@@ -37,8 +37,8 @@ func newGhcrCommand() *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		Run: func(ccmd *cobra.Command, args []string) {
 			out, err := ezoci.Search(
-				&search.SearchOpts{
-					Provider:    search.Ghcr,
+				&ezoci.SearchOpts{
+					Provider:    providers.Ghcr,
 					UrlOverride: UrlOverride,
 					Path:        args[0],
 				},
@@ -61,8 +61,8 @@ func newDockerCommand() *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		Run: func(ccmd *cobra.Command, args []string) {
 			out, err := ezoci.Search(
-				&search.SearchOpts{
-					Provider:    search.Docker,
+				&ezoci.SearchOpts{
+					Provider:    providers.Docker,
 					UrlOverride: UrlOverride,
 					Path:        args[0],
 				},
@@ -85,8 +85,8 @@ func newGcrCommand() *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		Run: func(ccmd *cobra.Command, args []string) {
 			out, err := ezoci.Search(
-				&search.SearchOpts{
-					Provider:    search.Gcr,
+				&ezoci.SearchOpts{
+					Provider:    providers.Gcr,
 					UrlOverride: UrlOverride,
 					Path:        args[0],
 				},
@@ -109,8 +109,8 @@ func newGitlabCommand() *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		Run: func(ccmd *cobra.Command, args []string) {
 			out, err := ezoci.Search(
-				&search.SearchOpts{
-					Provider:    search.Gitlab,
+				&ezoci.SearchOpts{
+					Provider:    providers.Gitlab,
 					UrlOverride: UrlOverride,
 					Path:        args[0],
 				},
@@ -133,8 +133,8 @@ func newHarborCommand() *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		Run: func(ccmd *cobra.Command, args []string) {
 			out, err := ezoci.Search(
-				&search.SearchOpts{
-					Provider:    search.Harbor,
+				&ezoci.SearchOpts{
+					Provider:    providers.Harbor,
 					UrlOverride: UrlOverride,
 					Path:        args[0],
 				},

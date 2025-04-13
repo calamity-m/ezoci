@@ -5,9 +5,10 @@ import (
 	"log/slog"
 	"os"
 
+	"github.com/calamity-m/ezoci/internal/logging"
 	"github.com/calamity-m/ezoci/pkg/cmd"
+	cmd_compare "github.com/calamity-m/ezoci/pkg/cmd/compare"
 	cmd_search "github.com/calamity-m/ezoci/pkg/cmd/search"
-	"github.com/calamity-m/ezoci/pkg/logging"
 	"github.com/spf13/cobra"
 )
 
@@ -32,6 +33,7 @@ var rootCmd = &cobra.Command{
 func Execute() error {
 
 	rootCmd.AddCommand(cmd_search.NewSearchCommand())
+	rootCmd.AddCommand(cmd_compare.NewCompareCommand())
 
 	rootCmd.PersistentFlags().BoolVarP(&cmd.Verbose, "verbose", "v", false, "Verbose")
 	rootCmd.PersistentFlags().BoolVarP(&cmd.PrettyPrint, "pretty-print", "p", false, "Prettified output")
